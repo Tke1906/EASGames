@@ -21,13 +21,13 @@ class Fighter {
     this.isSpecialAttack
 
     this.health = 100
+
+    this.specialKey = 0
   }
 
   draw() {
     ctx.fillStyle = this.color
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-    // attack box
 
     // ctx.fillStyle = 'green'
     // ctx.fillRect(
@@ -61,7 +61,7 @@ class Fighter {
   specialAttack() {
     setTimeout(() => {
       this.isSpecialAttacking = true
-      keys.Special.SpecialCount++
+      this.specialKey++
     }, 1)
   }
   attack() {

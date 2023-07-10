@@ -73,10 +73,10 @@ function frames() {
 
   // player config
   if (keys.a.pressed && player.lastKey === 'a') {
-    player.velocity.x = -5
+    player.velocity.x = -2.5
     player.attackBox.offset.x = -50
   } else if (keys.d.pressed && player.lastKey === 'd') {
-    player.velocity.x = 5
+    player.velocity.x = 2.5
     // player.attackBox.offset.x = -50
 
     player.attackBox.offset.x = 0
@@ -84,11 +84,11 @@ function frames() {
 
   // enemy config
   if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-    enemy.velocity.x = -5
+    enemy.velocity.x = -2.5
 
     enemy.attackBox.offset.x = -50
   } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-    enemy.velocity.x = 5
+    enemy.velocity.x = 2.5
     enemy.attackBox.offset.x = 0
   }
 
@@ -115,11 +115,11 @@ function frames() {
   if (
     rectangularCollision({ rectangle1: player, rectangle2: enemy }) &&
     player.isSpecialAttacking &&
-    keys.Special.SpecialCount === 1
+    player.specialKey === 1
   ) {
     setTimeout(() => {
       console.log('go')
-      keys.Special.SpecialCount = 0
+      player.specialKey = 0
     }, 5000)
     player.isSpecialAttacking = false
 
@@ -128,9 +128,15 @@ function frames() {
   }
   if (
     rectangularCollision({ rectangle1: enemy, rectangle2: player }) &&
-    enemy.isSpecialAttacking
+    enemy.isSpecialAttacking &&
+    enemy.specialKey === 1
   ) {
+    setTimeout(() => {
+      console.log('go')
+      enemy.specialKey = 0
+    }, 5000)
     enemy.isSpecialAttacking = false
+
     player.health -= 25
     document.querySelector('#playerHealth').style.width = player.health + '%'
   }
@@ -142,11 +148,12 @@ function frames() {
   }
 
   // player jump
-  if (keys.w.isJumping && keys.w.jumpCount == 1) {
+  if (keys.w.isJumping && keys.w.jumpCount === 1) {
     player.velocity.y = -15
     setTimeout(() => {
       keys.w.isJumping = false
-    }, 20)
+      console.log('player')
+    }, 2000)
   }
   if (
     player.position.y + player.height + player.velocity.y >=
@@ -156,7 +163,7 @@ function frames() {
   }
 
   // enemy jump
-  if (keys.ArrowUp.isJumping && keys.ArrowUp.jumpCount == 1) {
+  if (keys.ArrowUp.isJumping && keys.ArrowUp.jumpCount === 1) {
     enemy.velocity.y = -15
     setTimeout(() => {
       keys.ArrowUp.isJumping = false
@@ -206,9 +213,6 @@ const keys = {
   ArrowUp: {
     jumpCount: 0,
     isJumping: false
-  },
-  Special: {
-    SpecialCount: 0
   }
 }
 
@@ -233,25 +237,23 @@ window.addEventListener('gamepadconnected', gamepadconnected)
 
 function tester() {
   if (controllerIndex !== null) {
-    const gamepad = navigator.getGamepads()[0]
-
-    const axes = gamepad.axes
-    const buttons = gamepad.buttons
+    const gamepad_1 = navigator.getGamepads()[0]
+    const axes = gamepad_1.axes
+    const buttons = gamepad_1.buttons
     if (buttons[0].value === 1) {
       keys.w.jumpCount++
       keys.w.isJumping = true
     }
-    if (buttons[15].value === 1 || axes[0] > 0.5) {
+    if (axes[0] > 0.5) {
       // console.log(gamepad)
       keys.d.pressed = true
       player.lastKey = 'd'
     }
     if (axes[0] < 0.5 && axes[0] > 0) {
-      console.log(gamepad)
       keys.d.pressed = false
     }
 
-    if (buttons[14].value === 1 || axes[0] < -0.5) {
+    if (axes[0] < -0.5) {
       keys.a.pressed = true
       player.lastKey = 'a'
     }
@@ -262,8 +264,43 @@ function tester() {
     if (buttons[1].value === 1) {
       player.attack()
     }
+
     if (buttons[3].value === 1) {
       player.specialAttack()
+      console.log('go')
+    }
+    const gamepad_2 = navigator.getGamepads()[1]
+    const axes_2 = gamepad_2.axes
+    const buttons_2 = gamepad_2.buttons
+
+    if (buttons_2[0].value === 1) {
+      keys.ArrowUp.jumpCount++
+      keys.ArrowUp.isJumping = true
+    }
+    if (buttons_2[15].value === 1 || axes_2[0] > 0.5) {
+      // console.log(gamepad)
+      keys.ArrowRight.pressed = true
+      enemy.lastKey = 'ArrowRight'
+    }
+    if (axes_2[0] < 0.5 && axes_2[0] > 0) {
+      keys.ArrowRight.pressed = false
+    }
+
+    if (buttons_2[14].value === 1 || axes_2[0] < -0.5) {
+      keys.ArrowLeft.pressed = true
+      enemy.lastKey = 'ArrowLeft'
+    }
+    if (axes_2[0] > -0.5 && axes_2[0] < 0) {
+      keys.ArrowLeft.pressed = false
+    }
+
+    if (buttons_2[1].value === 1) {
+      enemy.attack()
+    }
+    if (buttons_2[3].value === 1) {
+      enemy.specialAttack()
+
+      console.log('go')
     }
   }
 }
