@@ -1,0 +1,25 @@
+<script>
+  let controllerIndex = null
+  window.addEventListener('gamepadconnected', event => {
+    const gamepad = event.gamepad
+    console.log('connected gamepad')
+    controllerIndex = gamepad.index
+    console.log(controllerIndex)
+    gameLoop()
+
+    // tester()
+  })
+
+  window.addEventListener('gamepaddisconnected', event => {
+    controllerIndex = null
+    console.log('disconnected gamepad')
+  })
+
+  function hanfleButtons() {
+    for (let i = 0; i < buttons.lenght; i++) {
+      const button = buttons[i]
+    }
+  }
+
+  // gameLoop()
+</script>

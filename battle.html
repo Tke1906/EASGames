@@ -1,0 +1,154 @@
+<title>EAS - Battle arena</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  canvas {
+    height: 100vh;
+    width: 100%;
+  }
+
+  #page {
+    position: relative;
+    display: inline-block;
+  }
+  #health-bar {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 20px;
+  }
+
+  #player {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #player,
+  #enemy {
+    height: 30px;
+    width: 100%;
+    position: relative;
+  }
+
+  #playerHealth,
+  #enemyHealth {
+    background-color: rgb(132, 255, 0);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  #enemyHealth {
+    left: 0;
+    border-radius: 0 5px 5px 0;
+  }
+
+  #playerHealth {
+    border-radius: 5px 0 0 5px;
+  }
+
+  .damage {
+    background-color: #c63d56;
+    height: 30px;
+    width: 100%;
+    border-radius: 5px;
+  }
+  #timer {
+    background-color: #432b46;
+    height: 100px;
+    width: 100px;
+    flex-shrink: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+  }
+
+  #textDisplay {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+
+    flex-direction: column;
+    gap: 5px;
+  }
+  #textDisplay p {
+    color: white;
+  }
+
+  #restartButton {
+    border: none;
+    background: #873342;
+    color: white;
+    text-shadow: 2px 0 13px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding: 10px 40px;
+
+    cursor: pointer;
+  }
+
+  #returnButton {
+    position: absolute;
+  }
+  #returnButton button.arrow {
+    border: none;
+    background: none;
+
+    padding: 5px 25px;
+
+    cursor: pointer;
+
+    z-index: 10;
+  }
+
+  #returnButton button.arrow a {
+    color: #d63939;
+    font-size: 40px;
+    text-decoration: none;
+  }
+</style>
+<body>
+  <div id="page">
+    <div id="health-bar">
+      <!-- vida do player -->
+      <div id="player">
+        <div id="playerHealth"></div>
+        <div class="damage"></div>
+      </div>
+      <!-- Timer -->
+      <div id="timer">10</div>
+
+      <!-- vida do inimigo -->
+      <div id="enemy">
+        <div class="damage"></div>
+        <div id="enemyHealth"></div>
+      </div>
+    </div>
+
+    <div id="returnButton">
+      <button class="arrow">
+        <a href="./pages/index.html">&lArr;</a>
+      </button>
+    </div>
+    <div id="textDisplay">
+      <p></p>
+      <button id="restartButton">Restart</button>
+    </div>
+
+    <canvas></canvas>
+  </div>
+  <script src="js/classes.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="index.js"></script>
+</body>
